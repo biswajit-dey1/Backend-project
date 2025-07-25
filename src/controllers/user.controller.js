@@ -156,7 +156,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-    await User.findByIdAndUpdate(                              
+    await User.findByIdAndUpdate(
         req.user._id,
         {
             $unset: {
@@ -208,12 +208,12 @@ const refreshAccesToken = asyncHandler(async (req, res) => {
             secure: true,
         };
 
-        const { accessToken, newRefreshToken } =
+        const { accessToken: newAccessToken, refreshToken : newRefreshToken } =
             await generateAccessAndRefereshTokens(user._id);
 
         return res
             .status(200)
-            .cookie("accessToken", accessToken, options)
+            .cookie("accessToken", newAccessToken, options)
             .cookie("refreshToken", newRefreshToken, options)
             .json(
                 new ApiResponse(
